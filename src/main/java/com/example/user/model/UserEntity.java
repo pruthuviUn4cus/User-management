@@ -50,7 +50,7 @@ public class UserEntity {
         ADMIN,USER,GUEST
     }
 
-    @NotBlank
+    @NotNull
     private Role roles;
 
     @CreationTimestamp
@@ -59,6 +59,70 @@ public class UserEntity {
     public enum Status{
         ACTIVE,INACTIVE
     }
-    @NotBlank
+    @NotNull
     private Status status;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Role getRoles() {
+        return roles;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Role roles) {
+        this.roles = roles;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService service;
@@ -27,7 +27,7 @@ public class UserController {
         return service.getAllUsers();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public Optional<UserEntity> getUserByID(@PathVariable Integer id){
         return service.getUserByID(id);
     }
@@ -37,7 +37,7 @@ public class UserController {
         return service.updateUser(id, user);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id){
         service.softDelete(id);
     }
