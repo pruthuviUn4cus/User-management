@@ -2,23 +2,22 @@ package com.example.user.controller;
 
 import com.example.user.model.UserEntity;
 import com.example.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService service;
 
-    public UserController(UserService service) {
-        this.service = service;
-    }
 
     @PostMapping
-    public UserEntity createUser(UserEntity user){
+    public UserEntity createUser(@RequestBody UserEntity user){
         return service.createUser(user);
     }
 
@@ -33,7 +32,7 @@ public class UserController {
     }
 
     @PutMapping
-    public UserEntity updateUser(@PathVariable Integer id, UserEntity user){
+    public UserEntity updateUser(@PathVariable Integer id,@RequestBody UserEntity user){
         return service.updateUser(id, user);
     }
 
@@ -47,3 +46,5 @@ public class UserController {
     }
 
 }
+
+//DTO
