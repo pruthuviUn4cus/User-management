@@ -1,8 +1,8 @@
 package com.example.user.controller;
 
+import com.example.user.DTO.UserDTO;
 import com.example.user.model.UserEntity;
 import com.example.user.service.UserService;
-import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,33 +20,28 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user){
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserEntity user){
         user.setId(null);
-        UserEntity createdUser = service.createUser(user);
+        UserDTO createdUser = service.createUser(user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdUser);
     }
-//    @PostMapping
-//    public UserEntity createUser(@RequestBody UserEntity user){
-//        user.setId(null);
-//        return service.createUser(user);
-//    }
 
 
 
     @GetMapping
-    public List<UserEntity> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return service.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public Optional<UserEntity> getUserByID(@PathVariable Integer id){
+    public Optional<UserDTO> getUserByID(@PathVariable Integer id){
         return service.getUserByID(id);
     }
 
-    @PutMapping
-    public UserEntity updateUser(@PathVariable Integer id,@RequestBody UserEntity user){
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable Integer id, @RequestBody UserEntity user){
         return service.updateUser(id, user);
     }
 

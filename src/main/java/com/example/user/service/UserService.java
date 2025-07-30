@@ -1,5 +1,6 @@
 package com.example.user.service;
 
+import com.example.user.DTO.UserDTO;
 import com.example.user.model.UserEntity;
 import com.example.user.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +15,28 @@ public class UserService {
 
     private final UserRepo repo;
 
-    public UserEntity createUser(UserEntity user){
-        return repo.save(user);
+    public UserDTO createUser(UserEntity user){
+        return new UserDTO(repo.save(user));
     }
-//hardcode the date
-    public List<UserEntity> getAllUsers(){
-        return repo.findAll();
+    //hardcode the date
+    public List<UserDTO> getAllUsers(){
+        return repo
+                .findAll()
+                .stream()
+                .filter(user -> !user.isDeleted())
+                .map(UserDTO::new)
+                .toList();
     }
-//    show only not deleted fields
+    //    show only not deleted fields
 
-    public Optional<UserEntity> getUserByID(Integer id){
-        return repo.findById(id);
+
+    public Optional<UserDTO> getUserByID(Integer id){
+        return repo
+                .findById(id)
+                .map(UserDTO::new);
     }
 
-    public UserEntity updateUser(Integer id, UserEntity newUser){
+    public UserDTO updateUser(Integer id, UserEntity newUser){
         return repo.findById(id).map(user ->{
             user.setFirstName(newUser.getFirstName());
             user.setLastName(newUser.getLastName());
@@ -37,13 +46,15 @@ public class UserService {
             user.setRoles(newUser.getRoles());
 //            user.setCreatedDate(newUser.getCreatedDate());
             user.setStatus(newUser.getStatus());
-            return repo.save(user);
+            return new UserDTO(repo.save(user));
         }).orElse(null);
     }
+
 // jwt authentication
     public void softDelete(Integer id){
         repo.findById(id).map(user -> {
             user.setStatus(UserEntity.Status.INACTIVE);
+            user.setDeleted(true);
             return repo.save(user);
         });
     }

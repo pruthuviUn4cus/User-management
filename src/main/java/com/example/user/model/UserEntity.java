@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -63,8 +64,8 @@ public class UserEntity {
     @NotNull
     private Status status;
 
-//    @Builder.Default
-//    private Boolean deleted = false;
+    @Builder.Default
+    private boolean deleted = false;
 
 
 }
