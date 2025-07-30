@@ -2,7 +2,10 @@ package com.example.user.controller;
 
 import com.example.user.model.UserEntity;
 import com.example.user.service.UserService;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +20,20 @@ public class UserController {
 
 
     @PostMapping
-    public UserEntity createUser(@RequestBody UserEntity user){
-        return service.createUser(user);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user){
+        user.setId(null);
+        UserEntity createdUser = service.createUser(user);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdUser);
     }
+//    @PostMapping
+//    public UserEntity createUser(@RequestBody UserEntity user){
+//        user.setId(null);
+//        return service.createUser(user);
+//    }
+
+
 
     @GetMapping
     public List<UserEntity> getAllUsers(){
