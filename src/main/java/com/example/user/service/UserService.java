@@ -1,6 +1,8 @@
 package com.example.user.service;
 
 import com.example.user.DTO.UserDTO;
+import com.example.user.Enums.Status;
+import com.example.user.Exceptions.NotFoundException;
 import com.example.user.model.UserEntity;
 import com.example.user.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class UserService {
                 .toList();
     }
     //    show only not deleted fields
-
+//    exception
 
     public Optional<UserDTO> getUserByID(Integer id){
         return repo
@@ -44,16 +46,17 @@ public class UserService {
             user.setEmail(newUser.getEmail());
             user.setPassword(newUser.getPassword());
             user.setRoles(newUser.getRoles());
-//            user.setCreatedDate(newUser.getCreatedDate());
             user.setStatus(newUser.getStatus());
             return new UserDTO(repo.save(user));
-        }).orElse(null);
+        }).orElseThrow( ()-> new NotFoundException("User not found"));
+
+        //    exception, pagination, search
     }
 
 // jwt authentication
     public void softDelete(Integer id){
         repo.findById(id).map(user -> {
-            user.setStatus(UserEntity.Status.INACTIVE);
+            user.setStatus(Status.INACTIVE);
             user.setDeleted(true);
             return repo.save(user);
         });

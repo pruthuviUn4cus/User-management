@@ -1,5 +1,7 @@
 package com.example.user.model;
 
+import com.example.user.Enums.Roles;
+import com.example.user.Enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -48,24 +50,16 @@ public class UserEntity {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$")
     private String password;
 
-    public enum Role{
-        ADMIN,USER,GUEST
-    }
-
     @NotNull
-    private Role roles;
+    private Roles roles;
 
     @CreationTimestamp
     private LocalDate createdDate;
 
-    public enum Status{
-        ACTIVE,INACTIVE
-    }
     @NotNull
     private Status status;
 
-    @Builder.Default
-    private boolean deleted = false;
+    private boolean deleted;
 
 
 }

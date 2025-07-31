@@ -21,7 +21,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserEntity user){
-        user.setId(null);
+//        user.setId(null);
+        user.setDeleted(false);
         UserDTO createdUser = service.createUser(user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
