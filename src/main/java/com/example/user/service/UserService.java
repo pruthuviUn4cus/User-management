@@ -8,6 +8,10 @@ import com.example.user.model.UserEntity;
 import com.example.user.repository.UserRepo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,17 +36,17 @@ public class UserService {
         checkUnique(user);
         return new UserDTO(repo.save(user));
     }
-    //hardcode the date
-    public List<UserDTO> getAllUsers(){
-        return repo
-                .findAll()
-                .stream()
-                .filter(user -> !user.isDeleted())
-                .map(UserDTO::new)
-                .toList();
+
+    public Page<UserDTO> getAllUsers(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return repo.findByDeletedFalse(pageable).map(UserDTO::new);
     }
-    //    show only not deleted fields
-//    exception
+//    return (Page<UserDTO>) repo
+//                .findAll()
+//                .stream()
+//                .filter(user -> !user.isDeleted())
+//                .map(UserDTO::new)
+//                .toList();
 
     public Optional<UserDTO> getUserByID(Integer id){
         return repo
@@ -62,10 +66,9 @@ public class UserService {
             return new UserDTO(repo.save(user));
         }).orElseThrow( ()-> new NotFoundException("User not found"));
 
-        //    exception, pagination, search
+
     }
 
-// jwt authentication
     public void softDelete(Integer id){
         repo.findById(id).map(user -> {
             user.setStatus(Status.INACTIVE);
@@ -74,8 +77,9 @@ public class UserService {
         });
     }
 
-    public void hardDelete(Integer id){
-        repo.deleteById(id);
-    }
 
 }
+
+// jwt authentication
+// exception, pagination, search
+

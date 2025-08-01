@@ -5,6 +5,7 @@ import com.example.user.model.UserEntity;
 import com.example.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,6 @@ public class UserController {
 
     private final UserService service;
 
-
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserEntity user){
         user.setId(null);
@@ -30,11 +30,9 @@ public class UserController {
                 .body(createdUser);
     }
 
-
-
     @GetMapping
-    public List<UserDTO> getAllUsers(){
-        return service.getAllUsers();
+    public Page<UserDTO> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        return service.getAllUsers(page, size);
     }
 
     @GetMapping("/{id}")
@@ -43,8 +41,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Integer id, @Valid @RequestBody UserEntity user){
-        return service.updateUser(id, user);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @Valid @RequestBody UserEntity user){
+        return ResponseEntity.ok(service.updateUser(id, user));
     }
 
     @DeleteMapping("/{id}")
@@ -52,10 +50,5 @@ public class UserController {
         service.softDelete(id);
     }
 
-    public void hardDelete(@PathVariable Integer id){
-        service.hardDelete(id);
-    }
-
 }
 
-//DTO

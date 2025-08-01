@@ -8,10 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.lang.annotation.RequiredTypes;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.rmi.Naming;
 import java.time.LocalDate;
 
 @Entity
@@ -24,7 +22,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     @Size(min = 2, max = 30)
