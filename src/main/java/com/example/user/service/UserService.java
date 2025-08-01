@@ -2,9 +2,11 @@ package com.example.user.service;
 
 import com.example.user.DTO.UserDTO;
 import com.example.user.Enums.Status;
+import com.example.user.Exceptions.DuplicateValueException;
 import com.example.user.Exceptions.NotFoundException;
 import com.example.user.model.UserEntity;
 import com.example.user.repository.UserRepo;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,17 @@ public class UserService {
 
     private final UserRepo repo;
 
+    public void checkUnique(UserEntity user){
+        repo.findByUsername(user.getUsername()).ifPresent(u-> {
+            throw new DuplicateValueException("Username already exists");
+        });
+        repo.findByEmail(user.getEmail()).ifPresent(u-> {
+            throw new DuplicateValueException("Email already exists");
+        });
+    }
+
     public UserDTO createUser(UserEntity user){
+        checkUnique(user);
         return new UserDTO(repo.save(user));
     }
     //hardcode the date
@@ -39,6 +51,7 @@ public class UserService {
     }
 
     public UserDTO updateUser(Integer id, UserEntity newUser){
+        checkUnique(newUser);
         return repo.findById(id).map(user ->{
             user.setFirstName(newUser.getFirstName());
             user.setLastName(newUser.getLastName());

@@ -3,6 +3,7 @@ package com.example.user.controller;
 import com.example.user.DTO.UserDTO;
 import com.example.user.model.UserEntity;
 import com.example.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserEntity user){
-//        user.setId(null);
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserEntity user){
+        user.setId(null);
         user.setDeleted(false);
         UserDTO createdUser = service.createUser(user);
         return ResponseEntity
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Integer id, @RequestBody UserEntity user){
+    public UserDTO updateUser(@PathVariable Integer id, @Valid @RequestBody UserEntity user){
         return service.updateUser(id, user);
     }
 
