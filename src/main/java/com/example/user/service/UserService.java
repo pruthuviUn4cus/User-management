@@ -51,7 +51,6 @@ public class UserService {
     }
 
     public UserDTO updateUser(Integer id, UserEntity newUser){
-        checkUnique(newUser);
         return repo.findById(id).map(user ->{
             user.setFirstName(newUser.getFirstName());
             user.setLastName(newUser.getLastName());
